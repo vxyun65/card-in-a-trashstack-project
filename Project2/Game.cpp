@@ -38,6 +38,35 @@ void addMissing(std::vector<std::string>& errors, const std::string& file_name,
     for (const std::string& key : missing) errors.push_back(file_name + ": no \"" + key + "\"");
 }
 
+struct GridPosition {
+    int x;
+    int y;
+};
+
+constexpr GridPosition kSteps[] = { { 0, -1 }, { 0, 1 }, { -1, 0 }, { 1, 0 } };
+
+// Клетки, до которых герой может дойти со старта (сама стартовая не считается).
+// Обход в ширину, чтобы объект не оказался в месте, отрезанном стенами
+std::vector<GridPosition> findReachableCells(const TileMap& map, int start_x, int start_y) {
+    std::vector<std::vector<bool>> visited(map.getHeight(), std::vector<bool>(map.getWidth(), false));
+    std::vector<GridPosition> reachable;
+    std::deque<GridPosition> queue = { { start_x, start_y } };
+    visited[start_y][start_x] = true;
+    while (!queue.empty()) {
+        GridPosition cell = queue.front();
+        queue.pop_front();
+        if (cell.x != start_x || cell.y != start_y) reachable.push_back(cell);
+        for (const GridPosition& step : kSteps) {
+            GridPosition next = { cell.x + step.x, cell.y + step.y };
+            if (map.isWalkable(next.x, next.y) && !visited[next.y][next.x]) {
+                visited[next.y][next.x] = true;
+                queue.push_back(next);
+            }
+        }
+    }
+    return reachable;
+}
+
 } // namespace
 
 Game::Game()
@@ -88,38 +117,64 @@ bool Game::loadAssets() {
 }
 
 void Game::spawnEntities(std::vector<std::string>& errors) {
+    // Из карты берём место старта героя и то, какие объекты есть в комнате
     int hero_count = 0;
+    int hero_x = 0;
+    int hero_y = 0;
+    std::vector<char> object_cells;
     for (int y = 0; y < tile_map.getHeight(); ++y) {
         for (int x = 0; x < tile_map.getWidth(); ++x) {
-            switch (tile_map.getCell(x, y)) {
-            case kHeroCell:
-                hero = std::make_unique<Hero>(tile_map, x, y, settings.getInt("max_energy"),
-                                              settings.getInt("step_energy_cost"), settings.getInt("search_power"));
+            char cell = tile_map.getCell(x, y);
+            if (cell == kHeroCell) {
+                hero_x = x;
+                hero_y = y;
                 ++hero_count;
-                break;
-            case kPileCell:
-                searchable_objects.push_back(std::make_unique<Pile>(
-                    x, y, settings.getInt("pile_clutter"), settings.getInt("pile_energy_drain"),
-                    texts.getString("pile_name")));
-                break;
-            case kClosetCell:
-                searchable_objects.push_back(std::make_unique<Closet>(
-                    x, y, settings.getInt("closet_clutter"), settings.getInt("closet_energy_drain"),
-                    texts.getString("closet_name")));
-                break;
-            case kSmallDrinkCell:
-                map_items.push_back(MapItem{ x, y, createDrink("small_drink") });
-                break;
-            case kBigDrinkCell:
-                map_items.push_back(MapItem{ x, y, createDrink("big_drink") });
-                break;
-            default:
-                break;
+            }
+            else if (cell == kPileCell || cell == kClosetCell || cell == kSmallDrinkCell || cell == kBigDrinkCell) {
+                object_cells.push_back(cell);
             }
         }
     }
+    bool has_searchable = std::any_of(object_cells.begin(), object_cells.end(),
+                                      [](char cell) { return cell == kPileCell || cell == kClosetCell; });
     if (hero_count != 1) errors.push_back("map.txt: there must be exactly one H (where you start)");
-    if (searchable_objects.empty()) errors.push_back("map.txt: there must be at least one P or C");
+    if (!has_searchable) errors.push_back("map.txt: there must be at least one P or C");
+    if (!errors.empty()) return;
+
+    hero = std::make_unique<Hero>(tile_map, hero_x, hero_y, settings.getInt("max_energy"),
+                                  settings.getInt("step_energy_cost"), settings.getInt("search_power"));
+
+    // Каждую игру объекты лежат на новых местах: на случайных клетках, до которых можно дойти
+    std::vector<GridPosition> free_cells = findReachableCells(tile_map, hero_x, hero_y);
+    if (free_cells.size() < object_cells.size()) {
+        errors.push_back("map.txt: not enough floor for all objects");
+        return;
+    }
+    std::shuffle(free_cells.begin(), free_cells.end(), rng);
+    for (size_t i = 0; i < object_cells.size(); ++i) {
+        int x = free_cells[i].x;
+        int y = free_cells[i].y;
+        switch (object_cells[i]) {
+        case kPileCell:
+            searchable_objects.push_back(std::make_unique<Pile>(
+                x, y, settings.getInt("pile_clutter"), settings.getInt("pile_energy_drain"),
+                texts.getString("pile_name")));
+            break;
+        case kClosetCell:
+            searchable_objects.push_back(std::make_unique<Closet>(
+                x, y, settings.getInt("closet_clutter"), settings.getInt("closet_energy_drain"),
+                texts.getString("closet_name")));
+            break;
+        case kSmallDrinkCell:
+            map_items.push_back(MapItem{ x, y, createDrink("small_drink") });
+            break;
+        case kBigDrinkCell:
+            map_items.push_back(MapItem{ x, y, createDrink("big_drink") });
+            break;
+        default:
+            break;
+        }
+    }
 }
 
 std::unique_ptr<Item> Game::createDrink(const std::string& kind) const {

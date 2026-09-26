@@ -2,6 +2,8 @@
 ;   #  wall                .  floor
 ;   H  where you start     P  pile of stuff     C  closet
 ;   e  energy drink        E  big energy drink
+; P, C, e and E only say what is in the room: every game
+; they are put in new random places you can walk to.
 ; A space means "nothing here" (you can't walk there).
 ; Lines that start with ';' are comments.
 ##########
