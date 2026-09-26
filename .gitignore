@@ -9,5 +9,6 @@ Release/
 *.ilk
 *.obj
 *.exe
+!Build/*.exe
 *.log
 *.tlog

@@ -1,0 +1,25 @@
+﻿; How things look on the screen. Format:  name  symbol  color  legend
+;   symbol - one or two characters; the word "space" means an empty cell
+;   color  - console color: 0 black, 1 blue, 2 green, 3 cyan, 4 red,
+;            5 purple, 6 brown, 7 gray, 8 dark gray, 9 light blue,
+;            10 light green, 11 light cyan, 12 light red, 13 pink,
+;            14 yellow, 15 white
+;   legend - explanation shown next to the map ("-" = don't show it).
+;            Symbols with the same explanation are shown on one line.
+; Lines that start with ';' are comments.
+
+hero_up       ^      11  You (the arrow shows where you look)
+hero_left     <      11  You (the arrow shows where you look)
+hero_down     v      11  You (the arrow shows where you look)
+hero_right    >      11  You (the arrow shows where you look)
+pile          ▲      13  Pile of stuff: quick to search, but tiring
+closet        ■      6   Closet: takes long to search, not tiring
+drink         ●      10  Energy drink: pick it up, use it later
+wall          ##     7   Wall
+floor         space  7   -
+
+; Energy bar
+energy_high   =      10  -
+energy_mid    =      14  -
+energy_low    =      12  -
+energy_empty  -      8   -

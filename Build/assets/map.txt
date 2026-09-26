@@ -1,0 +1,16 @@
+﻿; The room. One character = one cell of the map.
+;   #  wall                .  floor
+;   H  where you start     P  pile of stuff     C  closet
+;   e  energy drink        E  big energy drink
+; A space means "nothing here" (you can't walk there).
+; Lines that start with ';' are comments.
+##########
+#........#
+#.H.....E#
+#....P...#
+#...e....#
+#......C.#
+#........#
+#..P.....#
+#........#
+##########
