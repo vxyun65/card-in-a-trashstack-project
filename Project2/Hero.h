@@ -21,10 +21,10 @@ public:
     Inventory& getInventory();
     const Inventory& getInventory() const;
     void restoreEnergy(int amount);
+    void move(int delta_x, int delta_y);
 
     void takeDamage(int damage) override;
     int getHealthPoints() const override;
     int getAttackDamage() const override;
     bool isAlive() const override;
-    void move(int delta_x, int delta_y) override;
 };

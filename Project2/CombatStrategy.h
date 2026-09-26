@@ -7,11 +7,6 @@ public:
     virtual int calculateDamage(const Character& attacker, const Character& defender) const = 0;
 };
 
-class NormalStrategy : public CombatStrategy {
-public:
-    int calculateDamage(const Character& attacker, const Character& defender) const override;
-};
-
 class AggressiveStrategy : public CombatStrategy {
 public:
     int calculateDamage(const Character& attacker, const Character& defender) const override;

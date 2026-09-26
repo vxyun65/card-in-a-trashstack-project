@@ -21,5 +21,4 @@ public:
     virtual int getHealthPoints() const = 0;
     virtual int getAttackDamage() const = 0;
     virtual bool isAlive() const = 0;
-    virtual void move(int delta_x, int delta_y) = 0;
 };

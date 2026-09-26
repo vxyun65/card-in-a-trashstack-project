@@ -10,7 +10,7 @@
       <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
     </Filter>
     <Filter Include="Assets">
-      <UniqueIdentifier>{2B1F6C3E-5D4A-4E8B-9A7C-3F2E1D0C9B8A}</UniqueIdentifier>
+      <UniqueIdentifier>{21cda78b-3afb-4b15-bf1a-0f32f634197b}</UniqueIdentifier>
       <Extensions>txt</Extensions>
     </Filter>
   </ItemGroup>

@@ -20,7 +20,6 @@ void SearchableObject::takeDamage(int damage) { health_points -= damage; }
 int SearchableObject::getHealthPoints() const { return health_points; }
 int SearchableObject::getAttackDamage() const { return attack_damage; }
 bool SearchableObject::isAlive() const { return health_points > 0; }
-void SearchableObject::move(int delta_x, int delta_y) {}
 int SearchableObject::calculateDamageTo(const Character& target) const {
     return strategy->calculateDamage(*this, target);
 }

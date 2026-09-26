@@ -26,7 +26,6 @@ public:
     int getHealthPoints() const override;
     int getAttackDamage() const override;
     bool isAlive() const override;
-    void move(int delta_x, int delta_y) override;
     int calculateDamageTo(const Character& target) const;
     bool getIsActive() const;
     void setIsActive(bool active);

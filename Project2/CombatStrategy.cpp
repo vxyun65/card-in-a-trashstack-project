@@ -1,10 +1,6 @@
 ﻿#include "CombatStrategy.h"
 #include "Character.h"
 
-int NormalStrategy::calculateDamage(const Character& attacker, const Character& defender) const {
-    return attacker.getAttackDamage();
-}
-
 int AggressiveStrategy::calculateDamage(const Character& attacker, const Character& defender) const {
     // Куча: каждый ход обыска отнимает много энергии
     return attacker.getAttackDamage() + 3;
