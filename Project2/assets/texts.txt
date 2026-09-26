@@ -1,0 +1,39 @@
+﻿; All texts of the game. Format:  key = text
+; Words in {braces} are filled in by the game.
+; Lines that start with ';' are comments.
+
+window_title = Find my SD card
+title = Help me find my SD card
+press_to_start = Press any key to start...
+press_to_exit = Press any key to exit...
+
+energy_label = Energy
+legend_header = Legend:
+inventory_header = Inventory:
+inventory_empty = (empty)
+inventory_item = {slot}) {name} ({description})
+controls = WASD/arrows - move   SPACE - search   1-9 - use item   ESC - quit
+
+start_hint = Walk onto a pile of stuff or the closet to search it.
+blocked = You can't go that way.
+finish_search_first = Finish searching the {name} first! Press SPACE.
+nothing_to_search = There is nothing to search here.
+
+search_start = You start searching the {name}. Press SPACE.
+search_continue = Still searching the {name}... {progress}% done. Press SPACE.
+search_nothing = It's not in the {name}... Keep looking.
+
+pile_name = pile of stuff
+closet_name = closet
+small_drink_name = energy drink
+big_drink_name = big energy drink
+drink_description = +{amount} energy
+
+pickup = You picked up the {name}. Press {slot} to use it.
+inventory_full = Your hands are full, you can't take the {name}.
+use_item = You used the {name} ({description}).
+item_not_needed = You don't need the {name} right now.
+no_item = There is no item number {slot}.
+
+win = Now I can sleep with music
+lose = Departing to the dream world

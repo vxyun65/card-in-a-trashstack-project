@@ -1,0 +1,26 @@
+﻿; Game balance. Format:  key = number
+; Lines that start with ';' are comments.
+
+; Energy (your health). You lose when it runs out.
+max_energy = 100
+; Energy that one step costs
+step_energy_cost = 1
+
+; How much stuff you go through with one press of SPACE
+search_power = 10
+
+; Chance (from 0 to 1) that the SD card is in the object you just searched.
+; The last object you haven't searched always has it.
+card_chance = 0.25
+
+; Pile of stuff: little to go through, but every turn costs (energy_drain + 3)
+pile_clutter = 30
+pile_energy_drain = 8
+
+; Closet: a lot to go through, but every turn costs only (energy_drain - 1)
+closet_clutter = 60
+closet_energy_drain = 4
+
+; Energy drinks: e and E on the map
+small_drink_energy = 30
+big_drink_energy = 50
